@@ -1,0 +1,30 @@
+<h1>Listing subscriptions</h1>
+
+<table>
+  <tr>
+    <th>Status</th>
+    <th>Plan</th>
+    <th>Sub</th>
+    <th>Cc token</th>
+    <th>Merchant</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @subscriptions.each do |subscription| %>
+  <tr>
+    <td><%= subscription.status %></td>
+    <td><%= subscription.plan_id %></td>
+    <td><%= subscription.sub_id %></td>
+    <td><%= subscription.cc_token %></td>
+    <td><%= link_to 'Show', subscription %></td>
+    <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td>
+    <td><%= link_to 'Destroy', subscription, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Subscription', new_subscription_path %>

@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  status: MyString
+  plan_id: MyString
+  sub_id: MyString
+  cc_token: MyString
+  merchant_id: MyString
+
+two:
+  status: MyString
+  plan_id: MyString
+  sub_id: MyString
+  cc_token: MyString
+  merchant_id: MyString

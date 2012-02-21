@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Status:</b>
+  <%= @subscription.status %>
+</p>
+
+<p>
+  <b>Plan:</b>
+  <%= @subscription.plan_id %>
+</p>
+
+<p>
+  <b>Sub:</b>
+  <%= @subscription.sub_id %>
+</p>
+
+<p>
+  <b>Cc token:</b>
+  <%= @subscription.cc_token %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_subscription_path(@subscription) %> |
+<%= link_to 'Back', subscriptions_path %>

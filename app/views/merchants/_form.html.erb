@@ -1,0 +1,61 @@
+<%= form_for(@merchant) do |f| %>
+  <% if @merchant.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@merchant.errors.count, "error") %> prohibited this merchant from being saved:</h2>
+
+      <ul>
+      <% @merchant.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :login_id %><br />
+    <%= f.text_field :login_id, :maxlength => 15, :size => 30 %>
+  </div>
+  <div class="field">
+    <%= f.label :business_name %><br />
+    <%= f.text_field :business_name, :maxlength => 100, :size => 30%>
+  </div>
+  <div class="field">
+    <%= f.label :business_phone %><br />
+    <%= f.text_field :business_phone, :maxlength => 45, :size => 30%>
+  </div>
+  <div class="field">
+    <%= f.label :business_type %><br />
+    <%= f.text_field :business_type, :maxlength => 1%>
+  </div>
+  <div class="field">
+    <%= f.label :contact_name %><br />
+    <%= f.text_field :contact_name, :maxlength => 100, :size => 30 %>
+  </div>
+  <div class="field">
+    <%= f.label :contact_email %><br />
+    <%= f.text_field :contact_email, :maxlength => 100, :size => 30 %>
+  </div>
+  <div class="field">
+    <%= f.label :tc_accepted %><br />
+    <%= f.check_box :tc_accepted %>
+  </div>
+  <div class="field">
+    <%= f.label :is_active %><br />
+    <%= f.check_box :is_active %>
+  </div>
+  <div class="field">
+    <%= f.label :create_at %><br />
+    <%= f.datetime_select :create_at %>
+  </div>
+  <div class="field">
+    <%= f.label :updated_at %><br />
+    <%= f.datetime_select :updated_at %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

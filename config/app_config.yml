@@ -1,0 +1,11 @@
+development:
+  subscription_token: 35cr
+  sub_level: 2
+
+test:
+  subscription_token: 35cr
+  sub_level: 2
+  
+production:
+  subscription_token: 35cr  
+  sub_level: 2

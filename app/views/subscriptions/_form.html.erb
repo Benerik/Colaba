@@ -1,0 +1,180 @@
+<% if flash[:notice] %>
+    <div style="font-family:'Trebuchet MS'; color:#FF0000; font-size:14px;">
+        <%= flash[:notice] %>
+    </div>
+<% end %>
+<%= form_for(@subscription) do |f| %>
+
+    <% if @subscription.errors.any? == true and @result.success? !=false %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@subscription.errors.count, "error") %> prohibited this subscription from being
+                saved:</h2>
+            <ul>
+                <% @subscription.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+    <% if @subscription.errors.any? == false and @result and  @result.success? !=true %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@result.errors.count, "error") %> prohibited this subscription from being saved:</h2>
+            <ul>
+                <% @result.errors.each do |msg| %>
+                    <li><%= msg.message %></li>
+                <% end %>
+                <% if @result.errors.count == 0 %>
+                    <li><%= @result.message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+    <% if @subscription.errors.any? == true and  @result and @result.success? !=true %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@result.errors.count + @subscription.errors.count, "error") %> prohibited this
+                subscription from being saved:</h2>
+            <ul>
+                <% @subscription.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+                <% @result.errors.each do |msg| %>
+                    <li><%= msg.message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+    <div id="billing_address">
+        <h2>Billing Information</h2>
+        <table>
+            <tr>
+                <td class="head" colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="label">First Name</td>
+                <td><%= f.text_field "billing_first_name" %></td>
+            </tr>
+            <tr>
+                <td class="label">Last Name</td>
+                <td><%= f.text_field "billing_last_name" %></td>
+            </tr>
+            <tr>
+                <td class="label">Country</td>
+                <td>
+                    <%= select_tag 'subscription[billing_country]', options_for_select(Braintree::Address::CountryNames, "billing_country") %>
+                 
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Company <span>(optional)</span></td>
+                <td><%= f.text_field "billing_company" %></td>
+            </tr>
+            <tr>
+                <td class="label">Address 1</td>
+                <td><%= f.text_field "billing_address" %></td>
+            </tr>
+            <tr>
+                <td class="label">Address 2 <span>(optional)</span></td>
+                <td><%= f.text_field "billing_address2" %></td>
+            </tr>
+            <tr>
+                <td class="label">City</td>
+                <td><%= f.text_field "billing_city" %></td>
+            </tr>
+            <tr>
+                <td class="label">State/Province</td>
+                <td><%= f.text_field "billing_state" %></td>
+            </tr>
+            <tr>
+                <td class="label">Zip/Postal Code</td>
+                <td><%= f.text_field "billing_zipcode" %></td>
+            </tr>
+            <tr>
+                <td class="label">Fee</td>
+                <td>
+                    <select name="subscription[fee]" size="1">
+                        <option value="50">50$</option>
+                        <option value="100">100$</option>
+                        <option value="150">150$</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="payment_form">
+        <h2>Your Payment Details</h2>
+        <% options_for_year = Array.new -%>
+        <% y = Date.today.year -%>
+        <% 10.times do |n| -%>
+            <% options_for_year.push n+y -%>
+        <% end -%>
+        <div id="payment_details">
+            <table>
+                <div class="field">
+                    <tr>
+                        <td class="label">Name on Card</td>
+                        <td><%= f.text_field :credit_card_name %></td>
+                    </tr>
+                </div>
+                <tr>
+                    <td class="label">Card Type</td>
+                    <td>
+                        <%= f.select "credit_card_type", options_for_select([ "Visa", "MasterCard", "American Express", "Discover" ], @subscription.credit_card_type) %>
+                    </td>
+                </tr>
+                <div class="field">
+                    <tr>
+                        <td class="label">Card Number</td>
+                        <td><%= f.text_field :credit_card_number %></td>
+                    </tr>
+                </div>
+                <tr>
+                    <td class="label">Expiration</td>
+                    <td>
+
+                        <%
+                           # maybe the credit card expiration should be handled using the date_select helper
+                        -%>
+                        <select name="subscription[credit_card_month]" size="1">
+                            <option value="1">1 - Jan</option>
+                            <option value="2">2 - Feb</option>
+                            <option value="3">3 - Mar</option>
+                            <option value="4">4 - Apr</option>
+                            <option value="5">5 - May</option>
+                            <option value="6">6 - Jun</option>
+                            <option value="7">7 - Jul</option>
+                            <option value="8">8 - Aug</option>
+                            <option value="9">9 - Sep</option>
+                            <option value="10">10 - Oct</option>
+                            <option value="11">11 - Nov</option>
+                            <option value="12">12 - Dec</option>
+                        </select>
+                        <select name="subscription[credit_card_year]" size="1">
+                            <% y = Date.today.year -%>
+                            <% 10.times do |n| -%>
+                                <option value="<%= n+y -%>"><%= n+y -%></option>
+                            <% end -%>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">CVV Code</td>
+                    <td><%= f.text_field :credit_card_cvv_code, :size => 10 %> What's this?</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <p><%= f.submit "Submit Payment" -%></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+
+        <div style="clear:both;"></div>
+
+    </div>
+
+
+<% end %>
